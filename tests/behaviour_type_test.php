@@ -36,7 +36,6 @@ require_once(__DIR__ . '/../../../engine/tests/helpers.php');
  * @group      qbehaviour_adaptiveallnothing
  */
 final class behaviour_type_test extends \basic_testcase {
-
     /** @var qbehaviour_adaptiveallnothing_type */
     protected $behaviourtype;
 
@@ -50,8 +49,10 @@ final class behaviour_type_test extends \basic_testcase {
     }
 
     public function test_get_unused_display_options(): void {
-        $this->assertEquals([],
-                $this->behaviourtype->get_unused_display_options());
+        $this->assertEquals(
+            [],
+            $this->behaviourtype->get_unused_display_options()
+        );
     }
 
     public function test_can_questions_finish_during_the_attempt(): void {

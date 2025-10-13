@@ -75,10 +75,12 @@ class qbehaviour_adaptiveallnothing extends qbehaviour_adaptive {
         $gradedstep = $this->get_graded_step();
 
         // If not partially correct fall back to parent.
-        if (empty($gradedstep) ||
+        if (
+            empty($gradedstep) ||
                 question_state::graded_state_for_fraction(
                     $gradedstep->get_behaviour_var('_rawfraction')
-                ) == question_state::$gradedright) {
+                ) == question_state::$gradedright
+        ) {
             return parent::get_adaptive_marks();
         }
 
@@ -94,5 +96,4 @@ class qbehaviour_adaptiveallnothing extends qbehaviour_adaptive {
         $details->improvable = $this->is_state_improvable($this->qa->get_state());
         return $details;
     }
-
 }

@@ -50,59 +50,131 @@ final class mark_display_test extends \basic_testcase {
     }
 
     public function test_blank_before_graded(): void {
-        $this->assertEquals('',
-                $this->renderer->render_adaptive_marks(new qbehaviour_adaptive_mark_details(
-                        question_state::$todo), $this->options));
+        $this->assertEquals(
+            '',
+            $this->renderer->render_adaptive_marks(
+                new qbehaviour_adaptive_mark_details(
+                    question_state::$todo
+                ),
+                $this->options
+            )
+        );
     }
 
     public function test_correct_no_penalty(): void {
-        $this->assertEquals('<div class="correctness badge correct">' . get_string('correct', 'question') . '</div>' .
+        $this->assertEquals(
+            '<div class="correctness badge correct">' . get_string('correct', 'question') . '</div>' .
                 '<div class="gradingdetails">' .
-                get_string('gradingdetails', 'qbehaviour_adaptive',
-                        ['cur' => '1.00', 'raw' => '1.00', 'max' => '1.00']) . '</div>',
-                $this->renderer->render_adaptive_marks(new qbehaviour_adaptive_mark_details(
-                        question_state::$gradedright, 1, 1, 1, 0, 0, false), $this->options));
+                get_string(
+                    'gradingdetails',
+                    'qbehaviour_adaptive',
+                    ['cur' => '1.00', 'raw' => '1.00', 'max' => '1.00']
+                ) . '</div>',
+            $this->renderer->render_adaptive_marks(
+                new qbehaviour_adaptive_mark_details(
+                    question_state::$gradedright,
+                    1,
+                    1,
+                    1,
+                    0,
+                    0,
+                    false
+                ),
+                $this->options
+            )
+        );
     }
 
     public function test_partial_first_try(): void {
-        $this->assertEquals('<div class="correctness badge partiallycorrect">' . get_string('partiallycorrect', 'question') .
+        $this->assertEquals(
+            '<div class="correctness badge partiallycorrect">' . get_string('partiallycorrect', 'question') .
                 '</div><div class="gradingdetails">' .
-                get_string('gradingdetails', 'qbehaviour_adaptive',
-                        ['cur' => '0.50', 'raw' => '0.50', 'max' => '1.00']) . ' ' .
+                get_string(
+                    'gradingdetails',
+                    'qbehaviour_adaptive',
+                    ['cur' => '0.50', 'raw' => '0.50', 'max' => '1.00']
+                ) . ' ' .
                 get_string('gradingdetailspenalty', 'qbehaviour_adaptive', '0.10') . '</div>',
-                $this->renderer->render_adaptive_marks(new qbehaviour_adaptive_mark_details(
-                        question_state::$gradedpartial, 1, 0.5, 0.5, 0.1, 0.1, true), $this->options));
+            $this->renderer->render_adaptive_marks(
+                new qbehaviour_adaptive_mark_details(
+                    question_state::$gradedpartial,
+                    1,
+                    0.5,
+                    0.5,
+                    0.1,
+                    0.1,
+                    true
+                ),
+                $this->options
+            )
+        );
     }
 
     public function test_partial_second_try(): void {
         $mark = ['cur' => '0.80', 'raw' => '0.90', 'max' => '1.00'];
-        $this->assertEquals('<div class="correctness badge partiallycorrect">' . get_string('partiallycorrect', 'question') .
+        $this->assertEquals(
+            '<div class="correctness badge partiallycorrect">' . get_string('partiallycorrect', 'question') .
                 '</div><div class="gradingdetails">' .
                 get_string('gradingdetails', 'qbehaviour_adaptive', $mark) . ' ' .
                 get_string('gradingdetailsadjustment', 'qbehaviour_adaptive', $mark) . ' ' .
                 get_string('gradingdetailspenalty', 'qbehaviour_adaptive', '0.10') . ' ' .
                 get_string('gradingdetailspenaltytotal', 'qbehaviour_adaptive', '0.20') . '</div>',
-                $this->renderer->render_adaptive_marks(new qbehaviour_adaptive_mark_details(
-                        question_state::$gradedpartial, 1, 0.8, 0.9, 0.1, 0.2, true), $this->options));
+            $this->renderer->render_adaptive_marks(
+                new qbehaviour_adaptive_mark_details(
+                    question_state::$gradedpartial,
+                    1,
+                    0.8,
+                    0.9,
+                    0.1,
+                    0.2,
+                    true
+                ),
+                $this->options
+            )
+        );
     }
 
     public function test_correct_third_try(): void {
         $mark = ['cur' => '0.80', 'raw' => '1.00', 'max' => '1.00'];
-        $this->assertEquals('<div class="correctness badge partiallycorrect">' . get_string('partiallycorrect', 'question') .
+        $this->assertEquals(
+            '<div class="correctness badge partiallycorrect">' . get_string('partiallycorrect', 'question') .
                 '</div><div class="gradingdetails">' .
                 get_string('gradingdetails', 'qbehaviour_adaptive', $mark) . ' ' .
                 get_string('gradingdetailsadjustment', 'qbehaviour_adaptive', $mark) . '</div>',
-                $this->renderer->render_adaptive_marks(new qbehaviour_adaptive_mark_details(
-                        question_state::$gradedpartial, 1, 0.8, 1.0, 0.1, 0.3, false), $this->options));
+            $this->renderer->render_adaptive_marks(
+                new qbehaviour_adaptive_mark_details(
+                    question_state::$gradedpartial,
+                    1,
+                    0.8,
+                    1.0,
+                    0.1,
+                    0.3,
+                    false
+                ),
+                $this->options
+            )
+        );
     }
 
     public function test_correct_third_try_if_we_dont_increase_penalties_for_wrong(): void {
         $mark = ['cur' => '0.80', 'raw' => '1.00', 'max' => '1.00'];
-        $this->assertEquals('<div class="correctness badge partiallycorrect">' . get_string('partiallycorrect', 'question') .
+        $this->assertEquals(
+            '<div class="correctness badge partiallycorrect">' . get_string('partiallycorrect', 'question') .
                 '</div><div class="gradingdetails">' .
                 get_string('gradingdetails', 'qbehaviour_adaptive', $mark) . ' ' .
                 get_string('gradingdetailsadjustment', 'qbehaviour_adaptive', $mark) . '</div>',
-                $this->renderer->render_adaptive_marks(new qbehaviour_adaptive_mark_details(
-                        question_state::$gradedpartial, 1, 0.8, 1.0, 0, 0.2, false), $this->options));
+            $this->renderer->render_adaptive_marks(
+                new qbehaviour_adaptive_mark_details(
+                    question_state::$gradedpartial,
+                    1,
+                    0.8,
+                    1.0,
+                    0,
+                    0.2,
+                    false
+                ),
+                $this->options
+            )
+        );
     }
 }

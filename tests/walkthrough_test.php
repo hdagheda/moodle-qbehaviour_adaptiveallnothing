@@ -41,9 +41,12 @@ final class walkthrough_test extends \qbehaviour_walkthrough_test_base {
      * @param float $penalty Penalty
      */
     protected function get_contains_penalty_info_expectation($penalty) {
-        $penaltyinfo = get_string('gradingdetailspenalty', 'qbehaviour_adaptive',
-                                  format_float($penalty, $this->displayoptions->markdp));
-        return new \question_pattern_expectation('/'.preg_quote($penaltyinfo, '/').'/');
+        $penaltyinfo = get_string(
+            'gradingdetailspenalty',
+            'qbehaviour_adaptive',
+            format_float($penalty, $this->displayoptions->markdp)
+        );
+        return new \question_pattern_expectation('/' . preg_quote($penaltyinfo, '/') . '/');
     }
 
     /**
@@ -51,7 +54,7 @@ final class walkthrough_test extends \qbehaviour_walkthrough_test_base {
      */
     protected function get_does_not_contain_penalty_info_expectation() {
         $penaltyinfo = get_string('gradingdetailspenalty', 'qbehaviour_adaptive', 'XXXXX');
-        $penaltypattern = '/'.str_replace('XXXXX', '\\w*', preg_quote($penaltyinfo, '/')).'/';
+        $penaltypattern = '/' . str_replace('XXXXX', '\\w*', preg_quote($penaltyinfo, '/')) . '/';
         return new \question_no_pattern_expectation($penaltypattern);
     }
 
@@ -61,9 +64,12 @@ final class walkthrough_test extends \qbehaviour_walkthrough_test_base {
      * @param float $penalty Penalty
      */
     protected function get_contains_total_penalty_expectation($penalty) {
-        $penaltyinfo = get_string('gradingdetailspenaltytotal', 'qbehaviour_adaptive',
-                                  format_float($penalty, $this->displayoptions->markdp));
-        return new \question_pattern_expectation('/'.preg_quote($penaltyinfo, '/').'/');
+        $penaltyinfo = get_string(
+            'gradingdetailspenaltytotal',
+            'qbehaviour_adaptive',
+            format_float($penalty, $this->displayoptions->markdp)
+        );
+        return new \question_pattern_expectation('/' . preg_quote($penaltyinfo, '/') . '/');
     }
 
     /**
@@ -71,7 +77,7 @@ final class walkthrough_test extends \qbehaviour_walkthrough_test_base {
      */
     protected function get_does_not_contain_total_penalty_expectation() {
         $penaltyinfo = get_string('gradingdetailspenaltytotal', 'qbehaviour_adaptive', 'XXXXX');
-        $penaltypattern = '/'.str_replace('XXXXX', '\\w*', preg_quote($penaltyinfo, '/')).'/';
+        $penaltypattern = '/' . str_replace('XXXXX', '\\w*', preg_quote($penaltyinfo, '/')) . '/';
         return new \question_no_pattern_expectation($penaltypattern);
     }
 
@@ -80,7 +86,7 @@ final class walkthrough_test extends \qbehaviour_walkthrough_test_base {
      */
     protected function get_contains_disregarded_info_expectation() {
         $penaltyinfo = get_string('disregardedwithoutpenalty', 'qbehaviour_adaptive');
-        return new \question_pattern_expectation('/'.preg_quote($penaltyinfo, '/').'/');
+        return new \question_pattern_expectation('/' . preg_quote($penaltyinfo, '/') . '/');
     }
 
     /**
@@ -88,7 +94,7 @@ final class walkthrough_test extends \qbehaviour_walkthrough_test_base {
      */
     protected function get_does_not_contain_disregarded_info_expectation() {
         $penaltyinfo = get_string('disregardedwithoutpenalty', 'qbehaviour_adaptive');
-        return new \question_no_pattern_expectation('/'.preg_quote($penaltyinfo, '/').'/');
+        return new \question_no_pattern_expectation('/' . preg_quote($penaltyinfo, '/') . '/');
     }
 
     public function test_adaptiveallnothing_multichoice(): void {
@@ -105,13 +111,14 @@ final class walkthrough_test extends \qbehaviour_walkthrough_test_base {
         $this->check_current_state(question_state::$todo);
         $this->check_current_mark(null);
         $this->check_current_output(
-                $this->get_contains_marked_out_of_summary(),
-                $this->get_contains_question_text_expectation($mc),
-                $this->get_contains_mc_radio_expectation(0, true, false),
-                $this->get_contains_mc_radio_expectation(1, true, false),
-                $this->get_contains_mc_radio_expectation(2, true, false),
-                $this->get_contains_submit_button_expectation(true),
-                $this->get_does_not_contain_feedback_expectation());
+            $this->get_contains_marked_out_of_summary(),
+            $this->get_contains_question_text_expectation($mc),
+            $this->get_contains_mc_radio_expectation(0, true, false),
+            $this->get_contains_mc_radio_expectation(1, true, false),
+            $this->get_contains_mc_radio_expectation(2, true, false),
+            $this->get_contains_submit_button_expectation(true),
+            $this->get_does_not_contain_feedback_expectation()
+        );
 
         // Process a submit.
         $this->process_submission(['answer' => $wrongindex, '-submit' => 1]);
@@ -120,15 +127,18 @@ final class walkthrough_test extends \qbehaviour_walkthrough_test_base {
         $this->check_current_state(question_state::$todo);
         $this->check_current_mark(0);
         $this->check_current_output(
-                $this->get_contains_mark_summary(0),
-                $this->get_contains_mc_radio_expectation($wrongindex, true, true),
-                $this->get_contains_mc_radio_expectation(($wrongindex + 1) % 3, true, false),
-                $this->get_contains_mc_radio_expectation(($wrongindex + 2) % 3, true, false),
-                $this->get_contains_incorrect_expectation(),
-                $this->get_contains_penalty_info_expectation(1.00),
-                $this->get_does_not_contain_total_penalty_expectation());
-        $this->assertMatchesRegularExpression('/B|C/',
-                $this->quba->get_response_summary($this->slot));
+            $this->get_contains_mark_summary(0),
+            $this->get_contains_mc_radio_expectation($wrongindex, true, true),
+            $this->get_contains_mc_radio_expectation(($wrongindex + 1) % 3, true, false),
+            $this->get_contains_mc_radio_expectation(($wrongindex + 2) % 3, true, false),
+            $this->get_contains_incorrect_expectation(),
+            $this->get_contains_penalty_info_expectation(1.00),
+            $this->get_does_not_contain_total_penalty_expectation()
+        );
+        $this->assertMatchesRegularExpression(
+            '/B|C/',
+            $this->quba->get_response_summary($this->slot)
+        );
 
         // Process a change of answer to the right one, but not sumbitted.
         $this->process_submission(['answer' => $rightindex]);
@@ -137,12 +147,15 @@ final class walkthrough_test extends \qbehaviour_walkthrough_test_base {
         $this->check_current_state(question_state::$todo);
         $this->check_current_mark(0);
         $this->check_current_output(
-                $this->get_contains_mark_summary(0),
-                $this->get_contains_mc_radio_expectation($rightindex, true, true),
-                $this->get_contains_mc_radio_expectation(($rightindex + 1) % 3, true, false),
-                $this->get_contains_mc_radio_expectation(($rightindex + 2) % 3, true, false));
-        $this->assertMatchesRegularExpression('/B|C/',
-                $this->quba->get_response_summary($this->slot));
+            $this->get_contains_mark_summary(0),
+            $this->get_contains_mc_radio_expectation($rightindex, true, true),
+            $this->get_contains_mc_radio_expectation(($rightindex + 1) % 3, true, false),
+            $this->get_contains_mc_radio_expectation(($rightindex + 2) % 3, true, false)
+        );
+        $this->assertMatchesRegularExpression(
+            '/B|C/',
+            $this->quba->get_response_summary($this->slot)
+        );
 
         // Now submit the right answer.
         $this->process_submission(['answer' => $rightindex, '-submit' => 1]);
@@ -151,15 +164,18 @@ final class walkthrough_test extends \qbehaviour_walkthrough_test_base {
         $this->check_current_state(question_state::$complete);
         $this->check_current_mark(3 * (1 - $mc->penalty));
         $this->check_current_output(
-                $this->get_contains_mark_summary(3 * (1 - $mc->penalty)),
-                $this->get_contains_mc_radio_expectation($rightindex, true, true),
-                $this->get_contains_mc_radio_expectation(($rightindex + 1) % 3, true, false),
-                $this->get_contains_mc_radio_expectation(($rightindex + 2) % 3, true, false),
-                $this->get_contains_correct_expectation(),
-                $this->get_does_not_contain_penalty_info_expectation(),
-                $this->get_does_not_contain_total_penalty_expectation());
-        $this->assertEquals('A',
-                $this->quba->get_response_summary($this->slot));
+            $this->get_contains_mark_summary(3 * (1 - $mc->penalty)),
+            $this->get_contains_mc_radio_expectation($rightindex, true, true),
+            $this->get_contains_mc_radio_expectation(($rightindex + 1) % 3, true, false),
+            $this->get_contains_mc_radio_expectation(($rightindex + 2) % 3, true, false),
+            $this->get_contains_correct_expectation(),
+            $this->get_does_not_contain_penalty_info_expectation(),
+            $this->get_does_not_contain_total_penalty_expectation()
+        );
+        $this->assertEquals(
+            'A',
+            $this->quba->get_response_summary($this->slot)
+        );
 
         // Finish the attempt.
         $this->quba->finish_all_questions();
@@ -168,11 +184,12 @@ final class walkthrough_test extends \qbehaviour_walkthrough_test_base {
         $this->check_current_state(question_state::$gradedright);
         $this->check_current_mark(3 * (1 - $mc->penalty));
         $this->check_current_output(
-                $this->get_contains_mark_summary(3 * (1 - $mc->penalty)),
-                $this->get_contains_mc_radio_expectation($rightindex, false, true),
-                $this->get_contains_mc_radio_expectation(($rightindex + 1) % 3, false, false),
-                $this->get_contains_mc_radio_expectation(($rightindex + 2) % 3, false, false),
-                $this->get_contains_correct_expectation());
+            $this->get_contains_mark_summary(3 * (1 - $mc->penalty)),
+            $this->get_contains_mc_radio_expectation($rightindex, false, true),
+            $this->get_contains_mc_radio_expectation(($rightindex + 1) % 3, false, false),
+            $this->get_contains_mc_radio_expectation(($rightindex + 2) % 3, false, false),
+            $this->get_contains_correct_expectation()
+        );
 
         // Process a manual comment.
         $this->manual_grade('Not good enough!', 1, FORMAT_HTML);
@@ -181,8 +198,9 @@ final class walkthrough_test extends \qbehaviour_walkthrough_test_base {
         $this->check_current_state(question_state::$mangrpartial);
         $this->check_current_mark(1);
         $this->check_current_output(
-                $this->get_contains_mark_summary(1),
-                new \question_pattern_expectation('/' . preg_quote('Not good enough!', '/') . '/'));
+            $this->get_contains_mark_summary(1),
+            new \question_pattern_expectation('/' . preg_quote('Not good enough!', '/') . '/')
+        );
 
         // Now change the correct answer to the question, and regrade.
         $mc->answers[13]->fraction = -0.33333333;
@@ -194,8 +212,9 @@ final class walkthrough_test extends \qbehaviour_walkthrough_test_base {
         $this->check_current_state(question_state::$mangrpartial);
         $this->check_current_mark(1);
         $this->check_current_output(
-                $this->get_contains_mark_summary(1),
-                $this->get_contains_incorrect_expectation());
+            $this->get_contains_mark_summary(1),
+            $this->get_contains_incorrect_expectation()
+        );
 
         $autogradedstep = $this->get_step($this->get_step_count() - 2);
         $this->assertEqualsWithDelta($autogradedstep->get_fraction(), 1, 0.0000001);
@@ -213,10 +232,11 @@ final class walkthrough_test extends \qbehaviour_walkthrough_test_base {
         $this->check_current_state(question_state::$todo);
         $this->check_current_mark(null);
         $this->check_current_output(
-                $this->get_contains_marked_out_of_summary(),
-                $this->get_contains_question_text_expectation($mc),
-                $this->get_contains_submit_button_expectation(true),
-                $this->get_does_not_contain_feedback_expectation());
+            $this->get_contains_marked_out_of_summary(),
+            $this->get_contains_question_text_expectation($mc),
+            $this->get_contains_submit_button_expectation(true),
+            $this->get_does_not_contain_feedback_expectation()
+        );
 
         // Process a submit.
         $this->process_submission(['choice0' => 1, 'choice2' => 1, '-submit' => 1]);
@@ -225,11 +245,12 @@ final class walkthrough_test extends \qbehaviour_walkthrough_test_base {
         $this->check_current_state(question_state::$complete);
         $this->check_current_mark(2);
         $this->check_current_output(
-                $this->get_contains_mark_summary(2),
-                $this->get_contains_submit_button_expectation(true),
-                $this->get_contains_correct_expectation(),
-                $this->get_does_not_contain_penalty_info_expectation(),
-                $this->get_does_not_contain_total_penalty_expectation());
+            $this->get_contains_mark_summary(2),
+            $this->get_contains_submit_button_expectation(true),
+            $this->get_contains_correct_expectation(),
+            $this->get_does_not_contain_penalty_info_expectation(),
+            $this->get_does_not_contain_total_penalty_expectation()
+        );
 
         // Save the same correct answer again. Should not do anything.
         $numsteps = $this->get_step_count();
@@ -248,9 +269,10 @@ final class walkthrough_test extends \qbehaviour_walkthrough_test_base {
         $this->check_current_state(question_state::$gradedright);
         $this->check_current_mark(2);
         $this->check_current_output(
-                $this->get_contains_mark_summary(2),
-                $this->get_does_not_contain_submit_button_expectation(),
-                $this->get_contains_correct_expectation());
+            $this->get_contains_mark_summary(2),
+            $this->get_does_not_contain_submit_button_expectation(),
+            $this->get_contains_correct_expectation()
+        );
     }
 
     public function test_adaptiveallnothing_shortanswer_partially_right(): void {
@@ -267,9 +289,10 @@ final class walkthrough_test extends \qbehaviour_walkthrough_test_base {
         $this->check_output_does_not_contain_text_input_with_class('answer', 'partiallycorrect');
         $this->check_output_does_not_contain_text_input_with_class('answer', 'incorrect');
         $this->check_current_output(
-                $this->get_contains_marked_out_of_summary(),
-                $this->get_contains_submit_button_expectation(true),
-                $this->get_does_not_contain_feedback_expectation());
+            $this->get_contains_marked_out_of_summary(),
+            $this->get_contains_submit_button_expectation(true),
+            $this->get_does_not_contain_feedback_expectation()
+        );
 
         // Submit a partially correct answer.
         $this->process_submission(['-submit' => 1, 'answer' => 'toad']);
@@ -280,12 +303,13 @@ final class walkthrough_test extends \qbehaviour_walkthrough_test_base {
         $this->render();
         $this->check_output_contains_text_input_with_class('answer', 'partiallycorrect');
         $this->check_current_output(
-                $this->get_contains_mark_summary(0),
-                $this->get_contains_submit_button_expectation(true),
-                $this->get_contains_incorrect_expectation(),
-                $this->get_contains_penalty_info_expectation(0.33),
-                $this->get_does_not_contain_total_penalty_expectation(),
-                $this->get_does_not_contain_validation_error_expectation());
+            $this->get_contains_mark_summary(0),
+            $this->get_contains_submit_button_expectation(true),
+            $this->get_contains_incorrect_expectation(),
+            $this->get_contains_penalty_info_expectation(0.33),
+            $this->get_does_not_contain_total_penalty_expectation(),
+            $this->get_does_not_contain_validation_error_expectation()
+        );
 
         // Submit an incorrect answer.
         $this->process_submission(['-submit' => 1, 'answer' => 'bumblebee']);
@@ -296,12 +320,13 @@ final class walkthrough_test extends \qbehaviour_walkthrough_test_base {
         $this->render();
         $this->check_output_contains_text_input_with_class('answer', 'incorrect');
         $this->check_current_output(
-                $this->get_contains_mark_summary(0),
-                $this->get_contains_submit_button_expectation(true),
-                $this->get_contains_incorrect_expectation(),
-                $this->get_contains_penalty_info_expectation(0.33),
-                $this->get_contains_total_penalty_expectation(0.67),
-                $this->get_does_not_contain_validation_error_expectation());
+            $this->get_contains_mark_summary(0),
+            $this->get_contains_submit_button_expectation(true),
+            $this->get_contains_incorrect_expectation(),
+            $this->get_contains_penalty_info_expectation(0.33),
+            $this->get_contains_total_penalty_expectation(0.67),
+            $this->get_does_not_contain_validation_error_expectation()
+        );
 
         // Submit a correct answer.
         $this->process_submission(['-submit' => 1, 'answer' => 'frog']);
@@ -312,12 +337,13 @@ final class walkthrough_test extends \qbehaviour_walkthrough_test_base {
         $this->render();
         $this->check_output_contains_text_input_with_class('answer', 'correct');
         $this->check_current_output(
-                $this->get_contains_mark_summary(0.333334),
-                $this->get_contains_submit_button_expectation(true),
-                $this->get_contains_correct_expectation(),
-                $this->get_does_not_contain_penalty_info_expectation(),
-                $this->get_does_not_contain_total_penalty_expectation(),
-                $this->get_does_not_contain_validation_error_expectation());
+            $this->get_contains_mark_summary(0.333334),
+            $this->get_contains_submit_button_expectation(true),
+            $this->get_contains_correct_expectation(),
+            $this->get_does_not_contain_penalty_info_expectation(),
+            $this->get_does_not_contain_total_penalty_expectation(),
+            $this->get_does_not_contain_validation_error_expectation()
+        );
 
         // Finish the attempt.
         $this->quba->finish_all_questions();
@@ -326,10 +352,11 @@ final class walkthrough_test extends \qbehaviour_walkthrough_test_base {
         $this->check_current_state(question_state::$gradedright);
         $this->check_current_mark(0.3333334);
         $this->check_current_output(
-                $this->get_contains_mark_summary(0.3333334),
-                $this->get_does_not_contain_submit_button_expectation(),
-                $this->get_contains_correct_expectation(),
-                $this->get_does_not_contain_validation_error_expectation());
+            $this->get_contains_mark_summary(0.3333334),
+            $this->get_does_not_contain_submit_button_expectation(),
+            $this->get_contains_correct_expectation(),
+            $this->get_does_not_contain_validation_error_expectation()
+        );
     }
 
     public function test_adaptiveallnothing_shortanswer_wrong_right_wrong(): void {
@@ -342,9 +369,10 @@ final class walkthrough_test extends \qbehaviour_walkthrough_test_base {
         $this->check_current_state(question_state::$todo);
         $this->check_current_mark(null);
         $this->check_current_output(
-                $this->get_contains_marked_out_of_summary(),
-                $this->get_contains_submit_button_expectation(true),
-                $this->get_does_not_contain_feedback_expectation());
+            $this->get_contains_marked_out_of_summary(),
+            $this->get_contains_submit_button_expectation(true),
+            $this->get_does_not_contain_feedback_expectation()
+        );
 
         // Submit a wrong answer.
         $this->process_submission(['-submit' => 1, 'answer' => 'hippopotamus']);
@@ -353,12 +381,13 @@ final class walkthrough_test extends \qbehaviour_walkthrough_test_base {
         $this->check_current_state(question_state::$todo);
         $this->check_current_mark(0);
         $this->check_current_output(
-                $this->get_contains_mark_summary(0),
-                $this->get_contains_submit_button_expectation(true),
-                $this->get_contains_incorrect_expectation(),
-                $this->get_contains_penalty_info_expectation(2.00),
-                $this->get_does_not_contain_total_penalty_expectation(),
-                $this->get_does_not_contain_validation_error_expectation());
+            $this->get_contains_mark_summary(0),
+            $this->get_contains_submit_button_expectation(true),
+            $this->get_contains_incorrect_expectation(),
+            $this->get_contains_penalty_info_expectation(2.00),
+            $this->get_does_not_contain_total_penalty_expectation(),
+            $this->get_does_not_contain_validation_error_expectation()
+        );
 
         // Submit the same wrong answer again. Nothing should change.
         $this->process_submission(['-submit' => 1, 'answer' => 'hippopotamus']);
@@ -367,12 +396,13 @@ final class walkthrough_test extends \qbehaviour_walkthrough_test_base {
         $this->check_current_state(question_state::$todo);
         $this->check_current_mark(0);
         $this->check_current_output(
-                $this->get_contains_mark_summary(0),
-                $this->get_contains_submit_button_expectation(true),
-                $this->get_contains_incorrect_expectation(),
-                $this->get_contains_penalty_info_expectation(2.00),
-                $this->get_does_not_contain_total_penalty_expectation(),
-                $this->get_does_not_contain_validation_error_expectation());
+            $this->get_contains_mark_summary(0),
+            $this->get_contains_submit_button_expectation(true),
+            $this->get_contains_incorrect_expectation(),
+            $this->get_contains_penalty_info_expectation(2.00),
+            $this->get_does_not_contain_total_penalty_expectation(),
+            $this->get_does_not_contain_validation_error_expectation()
+        );
 
         // Submit a correct answer.
         $this->process_submission(['-submit' => 1, 'answer' => 'frog']);
@@ -381,12 +411,13 @@ final class walkthrough_test extends \qbehaviour_walkthrough_test_base {
         $this->check_current_state(question_state::$complete);
         $this->check_current_mark(4.00);
         $this->check_current_output(
-                $this->get_contains_mark_summary(4.00),
-                $this->get_contains_submit_button_expectation(true),
-                $this->get_contains_correct_expectation(),
-                $this->get_does_not_contain_penalty_info_expectation(),
-                $this->get_does_not_contain_total_penalty_expectation(),
-                $this->get_does_not_contain_validation_error_expectation());
+            $this->get_contains_mark_summary(4.00),
+            $this->get_contains_submit_button_expectation(true),
+            $this->get_contains_correct_expectation(),
+            $this->get_does_not_contain_penalty_info_expectation(),
+            $this->get_does_not_contain_total_penalty_expectation(),
+            $this->get_does_not_contain_validation_error_expectation()
+        );
 
         // Submit another incorrect answer.
         $this->process_submission(['-submit' => 1, 'answer' => 'bumblebee']);
@@ -395,12 +426,13 @@ final class walkthrough_test extends \qbehaviour_walkthrough_test_base {
         $this->check_current_state(question_state::$complete);
         $this->check_current_mark(4.00);
         $this->check_current_output(
-                $this->get_contains_mark_summary(4.00),
-                $this->get_contains_submit_button_expectation(true),
-                $this->get_contains_incorrect_expectation(),
-                $this->get_does_not_contain_penalty_info_expectation(),
-                $this->get_does_not_contain_total_penalty_expectation(),
-                $this->get_does_not_contain_validation_error_expectation());
+            $this->get_contains_mark_summary(4.00),
+            $this->get_contains_submit_button_expectation(true),
+            $this->get_contains_incorrect_expectation(),
+            $this->get_does_not_contain_penalty_info_expectation(),
+            $this->get_does_not_contain_total_penalty_expectation(),
+            $this->get_does_not_contain_validation_error_expectation()
+        );
 
         // Finish the attempt.
         $this->quba->finish_all_questions();
@@ -409,10 +441,11 @@ final class walkthrough_test extends \qbehaviour_walkthrough_test_base {
         $this->check_current_state(question_state::$gradedwrong);
         $this->check_current_mark(4.00);
         $this->check_current_output(
-                $this->get_contains_mark_summary(4.00),
-                $this->get_does_not_contain_submit_button_expectation(),
-                $this->get_contains_incorrect_expectation(),
-                $this->get_does_not_contain_validation_error_expectation());
+            $this->get_contains_mark_summary(4.00),
+            $this->get_does_not_contain_submit_button_expectation(),
+            $this->get_contains_incorrect_expectation(),
+            $this->get_does_not_contain_validation_error_expectation()
+        );
     }
 
     public function test_adaptiveallnothing_shortanswer_invalid_after_complete(): void {
@@ -425,9 +458,10 @@ final class walkthrough_test extends \qbehaviour_walkthrough_test_base {
         $this->check_current_state(question_state::$todo);
         $this->check_current_mark(null);
         $this->check_current_output(
-                $this->get_contains_marked_out_of_summary(),
-                $this->get_contains_submit_button_expectation(true),
-                $this->get_does_not_contain_feedback_expectation());
+            $this->get_contains_marked_out_of_summary(),
+            $this->get_contains_submit_button_expectation(true),
+            $this->get_does_not_contain_feedback_expectation()
+        );
 
         // Submit a wrong answer.
         $this->process_submission(['-submit' => 1, 'answer' => 'hippopotamus']);
@@ -436,12 +470,13 @@ final class walkthrough_test extends \qbehaviour_walkthrough_test_base {
         $this->check_current_state(question_state::$todo);
         $this->check_current_mark(0);
         $this->check_current_output(
-                $this->get_contains_mark_summary(0),
-                $this->get_contains_submit_button_expectation(true),
-                $this->get_contains_incorrect_expectation(),
-                $this->get_contains_penalty_info_expectation(0.33),
-                $this->get_does_not_contain_total_penalty_expectation(),
-                $this->get_does_not_contain_validation_error_expectation());
+            $this->get_contains_mark_summary(0),
+            $this->get_contains_submit_button_expectation(true),
+            $this->get_contains_incorrect_expectation(),
+            $this->get_contains_penalty_info_expectation(0.33),
+            $this->get_does_not_contain_total_penalty_expectation(),
+            $this->get_does_not_contain_validation_error_expectation()
+        );
 
         // Submit a correct answer.
         $this->process_submission(['-submit' => 1, 'answer' => 'frog']);
@@ -450,12 +485,13 @@ final class walkthrough_test extends \qbehaviour_walkthrough_test_base {
         $this->check_current_state(question_state::$complete);
         $this->check_current_mark(0.66666667);
         $this->check_current_output(
-                $this->get_contains_mark_summary(0.67),
-                $this->get_contains_submit_button_expectation(true),
-                $this->get_contains_correct_expectation(),
-                $this->get_does_not_contain_penalty_info_expectation(),
-                $this->get_does_not_contain_total_penalty_expectation(),
-                $this->get_does_not_contain_validation_error_expectation());
+            $this->get_contains_mark_summary(0.67),
+            $this->get_contains_submit_button_expectation(true),
+            $this->get_contains_correct_expectation(),
+            $this->get_does_not_contain_penalty_info_expectation(),
+            $this->get_does_not_contain_total_penalty_expectation(),
+            $this->get_does_not_contain_validation_error_expectation()
+        );
 
         // Submit an empty answer.
         $this->process_submission(['-submit' => 1, 'answer' => '']);
@@ -464,11 +500,12 @@ final class walkthrough_test extends \qbehaviour_walkthrough_test_base {
         $this->check_current_state(question_state::$invalid);
         $this->check_current_mark(0.66666667);
         $this->check_current_output(
-                $this->get_contains_mark_summary(0.67),
-                $this->get_contains_submit_button_expectation(true),
-                $this->get_does_not_contain_penalty_info_expectation(),
-                $this->get_does_not_contain_total_penalty_expectation(),
-                $this->get_contains_validation_error_expectation());
+            $this->get_contains_mark_summary(0.67),
+            $this->get_contains_submit_button_expectation(true),
+            $this->get_does_not_contain_penalty_info_expectation(),
+            $this->get_does_not_contain_total_penalty_expectation(),
+            $this->get_contains_validation_error_expectation()
+        );
 
         // Submit another wrong answer.
         $this->process_submission(['-submit' => 1, 'answer' => 'bumblebee']);
@@ -477,12 +514,13 @@ final class walkthrough_test extends \qbehaviour_walkthrough_test_base {
         $this->check_current_state(question_state::$complete);
         $this->check_current_mark(0.66666667);
         $this->check_current_output(
-                $this->get_contains_mark_summary(0.67),
-                $this->get_contains_submit_button_expectation(true),
-                $this->get_contains_incorrect_expectation(),
-                $this->get_does_not_contain_penalty_info_expectation(),
-                $this->get_does_not_contain_total_penalty_expectation(),
-                $this->get_does_not_contain_validation_error_expectation());
+            $this->get_contains_mark_summary(0.67),
+            $this->get_contains_submit_button_expectation(true),
+            $this->get_contains_incorrect_expectation(),
+            $this->get_does_not_contain_penalty_info_expectation(),
+            $this->get_does_not_contain_total_penalty_expectation(),
+            $this->get_does_not_contain_validation_error_expectation()
+        );
 
         // Finish the attempt.
         $this->quba->finish_all_questions();
@@ -491,10 +529,11 @@ final class walkthrough_test extends \qbehaviour_walkthrough_test_base {
         $this->check_current_state(question_state::$gradedwrong);
         $this->check_current_mark(0.66666667);
         $this->check_current_output(
-                $this->get_contains_mark_summary(0.67),
-                $this->get_does_not_contain_submit_button_expectation(),
-                $this->get_contains_incorrect_expectation(),
-                $this->get_does_not_contain_validation_error_expectation());
+            $this->get_contains_mark_summary(0.67),
+            $this->get_does_not_contain_submit_button_expectation(),
+            $this->get_contains_incorrect_expectation(),
+            $this->get_does_not_contain_validation_error_expectation()
+        );
     }
 
     public function test_adaptiveallnothing_shortanswer_zero_penalty(): void {
@@ -509,9 +548,10 @@ final class walkthrough_test extends \qbehaviour_walkthrough_test_base {
         $this->check_current_state(question_state::$todo);
         $this->check_current_mark(null);
         $this->check_current_output(
-                $this->get_contains_marked_out_of_summary(),
-                $this->get_contains_submit_button_expectation(true),
-                $this->get_does_not_contain_feedback_expectation());
+            $this->get_contains_marked_out_of_summary(),
+            $this->get_contains_submit_button_expectation(true),
+            $this->get_does_not_contain_feedback_expectation()
+        );
 
         // Submit a wrong answer.
         $this->process_submission(['-submit' => 1, 'answer' => 'hippopotamus']);
@@ -520,12 +560,13 @@ final class walkthrough_test extends \qbehaviour_walkthrough_test_base {
         $this->check_current_state(question_state::$todo);
         $this->check_current_mark(0);
         $this->check_current_output(
-                $this->get_contains_mark_summary(0),
-                $this->get_contains_submit_button_expectation(true),
-                $this->get_contains_incorrect_expectation(),
-                $this->get_does_not_contain_penalty_info_expectation(),
-                $this->get_does_not_contain_total_penalty_expectation(),
-                $this->get_does_not_contain_validation_error_expectation());
+            $this->get_contains_mark_summary(0),
+            $this->get_contains_submit_button_expectation(true),
+            $this->get_contains_incorrect_expectation(),
+            $this->get_does_not_contain_penalty_info_expectation(),
+            $this->get_does_not_contain_total_penalty_expectation(),
+            $this->get_does_not_contain_validation_error_expectation()
+        );
 
         // Submit a correct answer.
         $this->process_submission(['-submit' => 1, 'answer' => 'frog']);
@@ -534,12 +575,13 @@ final class walkthrough_test extends \qbehaviour_walkthrough_test_base {
         $this->check_current_state(question_state::$complete);
         $this->check_current_mark(1.0);
         $this->check_current_output(
-                $this->get_contains_mark_summary(1.0),
-                $this->get_contains_submit_button_expectation(true),
-                $this->get_contains_correct_expectation(),
-                $this->get_does_not_contain_penalty_info_expectation(),
-                $this->get_does_not_contain_total_penalty_expectation(),
-                $this->get_does_not_contain_validation_error_expectation());
+            $this->get_contains_mark_summary(1.0),
+            $this->get_contains_submit_button_expectation(true),
+            $this->get_contains_correct_expectation(),
+            $this->get_does_not_contain_penalty_info_expectation(),
+            $this->get_does_not_contain_total_penalty_expectation(),
+            $this->get_does_not_contain_validation_error_expectation()
+        );
 
         // Finish the attempt.
         $this->quba->finish_all_questions();
@@ -548,10 +590,11 @@ final class walkthrough_test extends \qbehaviour_walkthrough_test_base {
         $this->check_current_state(question_state::$gradedright);
         $this->check_current_mark(1.0);
         $this->check_current_output(
-                $this->get_contains_mark_summary(1.0),
-                $this->get_does_not_contain_submit_button_expectation(),
-                $this->get_contains_correct_expectation(),
-                $this->get_does_not_contain_validation_error_expectation());
+            $this->get_contains_mark_summary(1.0),
+            $this->get_does_not_contain_submit_button_expectation(),
+            $this->get_contains_correct_expectation(),
+            $this->get_does_not_contain_validation_error_expectation()
+        );
     }
 
     /**
@@ -567,9 +610,10 @@ final class walkthrough_test extends \qbehaviour_walkthrough_test_base {
         $this->check_current_state(question_state::$todo);
         $this->check_current_mark(null);
         $this->check_current_output(
-                $this->get_contains_marked_out_of_summary(),
-                $this->get_contains_submit_button_expectation(true),
-                $this->get_does_not_contain_feedback_expectation());
+            $this->get_contains_marked_out_of_summary(),
+            $this->get_contains_submit_button_expectation(true),
+            $this->get_does_not_contain_feedback_expectation()
+        );
 
         // Submit with blank answer.
         $this->process_submission(['-submit' => 1, 'answer' => '']);
@@ -578,13 +622,14 @@ final class walkthrough_test extends \qbehaviour_walkthrough_test_base {
         $this->check_current_state(question_state::$invalid);
         $this->check_current_mark(null);
         $this->check_current_output(
-                $this->get_contains_marked_out_of_summary(),
-                $this->get_contains_submit_button_expectation(true),
-                $this->get_does_not_contain_correctness_expectation(),
-                $this->get_does_not_contain_penalty_info_expectation(),
-                $this->get_does_not_contain_total_penalty_expectation(),
-                $this->get_contains_validation_error_expectation(),
-                $this->get_contains_disregarded_info_expectation());
+            $this->get_contains_marked_out_of_summary(),
+            $this->get_contains_submit_button_expectation(true),
+            $this->get_does_not_contain_correctness_expectation(),
+            $this->get_does_not_contain_penalty_info_expectation(),
+            $this->get_does_not_contain_total_penalty_expectation(),
+            $this->get_contains_validation_error_expectation(),
+            $this->get_contains_disregarded_info_expectation()
+        );
         $this->assertNull($this->quba->get_response_summary($this->slot));
 
         // Now get it wrong.
@@ -594,12 +639,13 @@ final class walkthrough_test extends \qbehaviour_walkthrough_test_base {
         $this->check_current_state(question_state::$todo);
         $this->check_current_mark(0);
         $this->check_current_output(
-                $this->get_contains_mark_summary(0),
-                $this->get_contains_submit_button_expectation(true),
-                $this->get_contains_incorrect_expectation(),
-                $this->get_contains_penalty_info_expectation(0.33),
-                $this->get_does_not_contain_total_penalty_expectation(),
-                $this->get_does_not_contain_validation_error_expectation());
+            $this->get_contains_mark_summary(0),
+            $this->get_contains_submit_button_expectation(true),
+            $this->get_contains_incorrect_expectation(),
+            $this->get_contains_penalty_info_expectation(0.33),
+            $this->get_does_not_contain_total_penalty_expectation(),
+            $this->get_does_not_contain_validation_error_expectation()
+        );
 
         // Now submit blank again.
         $this->process_submission(['-submit' => 1, 'answer' => '']);
@@ -608,12 +654,13 @@ final class walkthrough_test extends \qbehaviour_walkthrough_test_base {
         $this->check_current_state(question_state::$invalid);
         $this->check_current_mark(0);
         $this->check_current_output(
-                $this->get_contains_mark_summary(0),
-                $this->get_contains_submit_button_expectation(true),
-                $this->get_does_not_contain_correctness_expectation(),
-                $this->get_does_not_contain_penalty_info_expectation(),
-                $this->get_does_not_contain_total_penalty_expectation(),
-                $this->get_contains_validation_error_expectation());
+            $this->get_contains_mark_summary(0),
+            $this->get_contains_submit_button_expectation(true),
+            $this->get_does_not_contain_correctness_expectation(),
+            $this->get_does_not_contain_penalty_info_expectation(),
+            $this->get_does_not_contain_total_penalty_expectation(),
+            $this->get_contains_validation_error_expectation()
+        );
     }
 
     public function test_adaptiveallnothing_numerical(): void {
@@ -626,9 +673,10 @@ final class walkthrough_test extends \qbehaviour_walkthrough_test_base {
         $this->check_current_state(question_state::$todo);
         $this->check_current_mark(null);
         $this->check_current_output(
-                $this->get_contains_marked_out_of_summary(),
-                $this->get_contains_submit_button_expectation(true),
-                $this->get_does_not_contain_feedback_expectation());
+            $this->get_contains_marked_out_of_summary(),
+            $this->get_contains_submit_button_expectation(true),
+            $this->get_does_not_contain_feedback_expectation()
+        );
 
         // Submit the correct answer.
         $this->process_submission(['-submit' => 1, 'answer' => '3.14']);
@@ -637,12 +685,13 @@ final class walkthrough_test extends \qbehaviour_walkthrough_test_base {
         $this->check_current_state(question_state::$complete);
         $this->check_current_mark(1);
         $this->check_current_output(
-                $this->get_contains_mark_summary(1),
-                $this->get_contains_submit_button_expectation(true),
-                $this->get_contains_correct_expectation(),
-                $this->get_does_not_contain_penalty_info_expectation(),
-                $this->get_does_not_contain_total_penalty_expectation(),
-                $this->get_does_not_contain_validation_error_expectation());
+            $this->get_contains_mark_summary(1),
+            $this->get_contains_submit_button_expectation(true),
+            $this->get_contains_correct_expectation(),
+            $this->get_does_not_contain_penalty_info_expectation(),
+            $this->get_does_not_contain_total_penalty_expectation(),
+            $this->get_does_not_contain_validation_error_expectation()
+        );
 
         // Submit an incorrect answer.
         $this->process_submission(['-submit' => 1, 'answer' => '-5']);
@@ -651,12 +700,13 @@ final class walkthrough_test extends \qbehaviour_walkthrough_test_base {
         $this->check_current_state(question_state::$complete);
         $this->check_current_mark(1);
         $this->check_current_output(
-                $this->get_contains_mark_summary(1),
-                $this->get_contains_submit_button_expectation(true),
-                $this->get_contains_incorrect_expectation(),
-                $this->get_does_not_contain_penalty_info_expectation(),
-                $this->get_does_not_contain_total_penalty_expectation(),
-                $this->get_does_not_contain_validation_error_expectation());
+            $this->get_contains_mark_summary(1),
+            $this->get_contains_submit_button_expectation(true),
+            $this->get_contains_incorrect_expectation(),
+            $this->get_does_not_contain_penalty_info_expectation(),
+            $this->get_does_not_contain_total_penalty_expectation(),
+            $this->get_does_not_contain_validation_error_expectation()
+        );
 
         // Finish the attempt.
         $this->quba->finish_all_questions();
@@ -665,10 +715,11 @@ final class walkthrough_test extends \qbehaviour_walkthrough_test_base {
         $this->check_current_state(question_state::$gradedwrong);
         $this->check_current_mark(1);
         $this->check_current_output(
-                $this->get_contains_mark_summary(1),
-                $this->get_does_not_contain_submit_button_expectation(),
-                $this->get_contains_incorrect_expectation(),
-                $this->get_does_not_contain_validation_error_expectation());
+            $this->get_contains_mark_summary(1),
+            $this->get_does_not_contain_submit_button_expectation(),
+            $this->get_contains_incorrect_expectation(),
+            $this->get_does_not_contain_validation_error_expectation()
+        );
     }
 
     public function test_adaptiveallnothing_numerical_invalid(): void {
@@ -682,9 +733,10 @@ final class walkthrough_test extends \qbehaviour_walkthrough_test_base {
         $this->check_current_state(question_state::$todo);
         $this->check_current_mark(null);
         $this->check_current_output(
-                $this->get_contains_marked_out_of_summary(),
-                $this->get_contains_submit_button_expectation(true),
-                $this->get_does_not_contain_feedback_expectation());
+            $this->get_contains_marked_out_of_summary(),
+            $this->get_contains_submit_button_expectation(true),
+            $this->get_does_not_contain_feedback_expectation()
+        );
 
         // Submit a non-numerical answer.
         $this->process_submission(['-submit' => 1, 'answer' => 'Pi']);
@@ -693,13 +745,14 @@ final class walkthrough_test extends \qbehaviour_walkthrough_test_base {
         $this->check_current_state(question_state::$invalid);
         $this->check_current_mark(null);
         $this->check_current_output(
-                $this->get_contains_marked_out_of_summary(1),
-                $this->get_contains_submit_button_expectation(true),
-                $this->get_does_not_contain_correctness_expectation(),
-                $this->get_does_not_contain_penalty_info_expectation(),
-                $this->get_does_not_contain_total_penalty_expectation(),
-                $this->get_contains_validation_error_expectation(),
-                $this->get_contains_disregarded_info_expectation());
+            $this->get_contains_marked_out_of_summary(1),
+            $this->get_contains_submit_button_expectation(true),
+            $this->get_does_not_contain_correctness_expectation(),
+            $this->get_does_not_contain_penalty_info_expectation(),
+            $this->get_does_not_contain_total_penalty_expectation(),
+            $this->get_contains_validation_error_expectation(),
+            $this->get_contains_disregarded_info_expectation()
+        );
 
         // Submit an incorrect answer.
         $this->process_submission(['-submit' => 1, 'answer' => '-5']);
@@ -708,13 +761,14 @@ final class walkthrough_test extends \qbehaviour_walkthrough_test_base {
         $this->check_current_state(question_state::$todo);
         $this->check_current_mark(0);
         $this->check_current_output(
-                $this->get_contains_mark_summary(0),
-                $this->get_contains_submit_button_expectation(true),
-                $this->get_contains_incorrect_expectation(),
-                $this->get_contains_penalty_info_expectation(0.1),
-                $this->get_does_not_contain_total_penalty_expectation(),
-                $this->get_does_not_contain_validation_error_expectation(),
-                $this->get_does_not_contain_disregarded_info_expectation());
+            $this->get_contains_mark_summary(0),
+            $this->get_contains_submit_button_expectation(true),
+            $this->get_contains_incorrect_expectation(),
+            $this->get_contains_penalty_info_expectation(0.1),
+            $this->get_does_not_contain_total_penalty_expectation(),
+            $this->get_does_not_contain_validation_error_expectation(),
+            $this->get_does_not_contain_disregarded_info_expectation()
+        );
 
         // Submit another non-numerical answer.
         $this->process_submission(['-submit' => 1, 'answer' => 'Pi*2']);
@@ -723,13 +777,14 @@ final class walkthrough_test extends \qbehaviour_walkthrough_test_base {
         $this->check_current_state(question_state::$invalid);
         $this->check_current_mark(0);
         $this->check_current_output(
-                $this->get_contains_mark_summary(0),
-                $this->get_contains_submit_button_expectation(true),
-                $this->get_does_not_contain_correctness_expectation(),
-                $this->get_does_not_contain_penalty_info_expectation(),
-                $this->get_does_not_contain_total_penalty_expectation(),
-                $this->get_contains_validation_error_expectation(),
-                $this->get_contains_disregarded_info_expectation());
+            $this->get_contains_mark_summary(0),
+            $this->get_contains_submit_button_expectation(true),
+            $this->get_does_not_contain_correctness_expectation(),
+            $this->get_does_not_contain_penalty_info_expectation(),
+            $this->get_does_not_contain_total_penalty_expectation(),
+            $this->get_contains_validation_error_expectation(),
+            $this->get_contains_disregarded_info_expectation()
+        );
 
         // Submit the correct answer.
         $this->process_submission(['-submit' => 1, 'answer' => '3.14']);
@@ -738,13 +793,14 @@ final class walkthrough_test extends \qbehaviour_walkthrough_test_base {
         $this->check_current_state(question_state::$complete);
         $this->check_current_mark(0.9);
         $this->check_current_output(
-                $this->get_contains_mark_summary(0.9),
-                $this->get_contains_submit_button_expectation(true),
-                $this->get_contains_correct_expectation(),
-                $this->get_does_not_contain_penalty_info_expectation(),
-                $this->get_does_not_contain_total_penalty_expectation(),
-                $this->get_does_not_contain_validation_error_expectation(),
-                $this->get_does_not_contain_disregarded_info_expectation());
+            $this->get_contains_mark_summary(0.9),
+            $this->get_contains_submit_button_expectation(true),
+            $this->get_contains_correct_expectation(),
+            $this->get_does_not_contain_penalty_info_expectation(),
+            $this->get_does_not_contain_total_penalty_expectation(),
+            $this->get_does_not_contain_validation_error_expectation(),
+            $this->get_does_not_contain_disregarded_info_expectation()
+        );
 
         // Submit another non-numerical answer.
         $this->process_submission(['-submit' => 1, 'answer' => 'Pi/3']);
@@ -753,13 +809,14 @@ final class walkthrough_test extends \qbehaviour_walkthrough_test_base {
         $this->check_current_state(question_state::$invalid);
         $this->check_current_mark(0.9);
         $this->check_current_output(
-                $this->get_contains_mark_summary(0.9),
-                $this->get_contains_submit_button_expectation(true),
-                $this->get_does_not_contain_correctness_expectation(),
-                $this->get_does_not_contain_penalty_info_expectation(),
-                $this->get_does_not_contain_total_penalty_expectation(),
-                $this->get_contains_validation_error_expectation(),
-                $this->get_contains_disregarded_info_expectation());
+            $this->get_contains_mark_summary(0.9),
+            $this->get_contains_submit_button_expectation(true),
+            $this->get_does_not_contain_correctness_expectation(),
+            $this->get_does_not_contain_penalty_info_expectation(),
+            $this->get_does_not_contain_total_penalty_expectation(),
+            $this->get_contains_validation_error_expectation(),
+            $this->get_contains_disregarded_info_expectation()
+        );
 
         // Finish the attempt.
         $this->quba->finish_all_questions();
@@ -768,11 +825,12 @@ final class walkthrough_test extends \qbehaviour_walkthrough_test_base {
         $this->check_current_state(question_state::$gradedwrong);
         $this->check_current_mark(0.9);
         $this->check_current_output(
-                $this->get_contains_mark_summary(0.9),
-                $this->get_does_not_contain_submit_button_expectation(),
-                $this->get_contains_incorrect_expectation(),
-                $this->get_does_not_contain_validation_error_expectation(),
-                $this->get_does_not_contain_disregarded_info_expectation());
+            $this->get_contains_mark_summary(0.9),
+            $this->get_does_not_contain_submit_button_expectation(),
+            $this->get_contains_incorrect_expectation(),
+            $this->get_does_not_contain_validation_error_expectation(),
+            $this->get_does_not_contain_disregarded_info_expectation()
+        );
     }
 
     public function test_adaptiveallnothing_multianswer(): void {
@@ -788,20 +846,24 @@ final class walkthrough_test extends \qbehaviour_walkthrough_test_base {
         // Check the initial state.
         $this->check_current_state(question_state::$todo);
         $this->check_current_mark(null);
-        $this->assertEquals('adaptiveallnothing',
-                $this->quba->get_question_attempt($this->slot)->get_behaviour_name());
+        $this->assertEquals(
+            'adaptiveallnothing',
+            $this->quba->get_question_attempt($this->slot)->get_behaviour_name()
+        );
         $this->render();
         $this->check_output_contains_text_input('sub1_answer', '', true);
         $this->check_output_does_not_contain_text_input_with_class('sub1_answer', 'correct');
         $this->check_output_does_not_contain_text_input_with_class('sub1_answer', 'partiallycorrect');
         $this->check_output_does_not_contain_text_input_with_class('sub1_answer', 'incorrect');
         $this->check_current_output(
-                $this->get_contains_marked_out_of_summary(),
-                $this->get_contains_submit_button_expectation(true),
-                $this->get_does_not_contain_validation_error_expectation(),
-                $this->get_does_not_contain_feedback_expectation());
+            $this->get_contains_marked_out_of_summary(),
+            $this->get_contains_submit_button_expectation(true),
+            $this->get_does_not_contain_validation_error_expectation(),
+            $this->get_does_not_contain_feedback_expectation()
+        );
         $this->check_output_contains_selectoptions(
-                $this->get_contains_select_expectation('sub2_answer', $choices, null, true));
+            $this->get_contains_select_expectation('sub2_answer', $choices, null, true)
+        );
 
         // Submit an invalid response.
         $this->process_submission(['sub1_answer' => '', 'sub2_answer' => 1, '-submit' => 1]);
@@ -811,17 +873,21 @@ final class walkthrough_test extends \qbehaviour_walkthrough_test_base {
         $this->check_current_mark(null);
         $this->check_output_contains_text_input('sub1_answer', '', true);
         $this->check_current_output(
-                $this->get_contains_submit_button_expectation(true),
-                $this->get_does_not_contain_penalty_info_expectation(),
-                $this->get_does_not_contain_total_penalty_expectation(),
-                $this->get_contains_disregarded_info_expectation());
+            $this->get_contains_submit_button_expectation(true),
+            $this->get_does_not_contain_penalty_info_expectation(),
+            $this->get_does_not_contain_total_penalty_expectation(),
+            $this->get_contains_disregarded_info_expectation()
+        );
         $this->check_output_contains_selectoptions(
-                $this->get_contains_select_expectation('sub2_answer', $choices, 1, true));
+            $this->get_contains_select_expectation('sub2_answer', $choices, 1, true)
+        );
 
         // Check that extract responses will return the reset data.
         $prefix = $this->quba->get_field_prefix($this->slot);
-        $this->assertEquals(['sub2_answer' => 1],
-                $this->quba->extract_responses($this->slot, [$prefix . 'sub2_answer' => 1]));
+        $this->assertEquals(
+            ['sub2_answer' => 1],
+            $this->quba->extract_responses($this->slot, [$prefix . 'sub2_answer' => 1])
+        );
 
         // Submit an incorrect response.
         $this->process_submission(['sub1_answer' => 'Dog',
@@ -834,13 +900,15 @@ final class walkthrough_test extends \qbehaviour_walkthrough_test_base {
         $this->check_output_contains_text_input('sub1_answer', 'Dog', true);
         $this->check_output_contains_text_input_with_class('sub1_answer', 'incorrect');
         $this->check_current_output(
-                $this->get_contains_mark_summary(0),
-                $this->get_contains_submit_button_expectation(true),
-                $this->get_contains_incorrect_expectation(),
-                $this->get_contains_penalty_info_expectation(4.00),
-                $this->get_does_not_contain_validation_error_expectation());
+            $this->get_contains_mark_summary(0),
+            $this->get_contains_submit_button_expectation(true),
+            $this->get_contains_incorrect_expectation(),
+            $this->get_contains_penalty_info_expectation(4.00),
+            $this->get_does_not_contain_validation_error_expectation()
+        );
         $this->check_output_contains_selectoptions(
-                $this->get_contains_select_expectation('sub2_answer', $choices, 1, true));
+            $this->get_contains_select_expectation('sub2_answer', $choices, 1, true)
+        );
 
         // Submit the right answer.
         $this->process_submission(['sub1_answer' => 'Owl', 'sub2_answer' => 2, '-submit' => 1]);
@@ -852,14 +920,16 @@ final class walkthrough_test extends \qbehaviour_walkthrough_test_base {
         $this->check_output_contains_text_input('sub1_answer', 'Owl', true);
         $this->check_output_contains_text_input_with_class('sub1_answer', 'correct');
         $this->check_current_output(
-                $this->get_contains_mark_summary(8.00),
-                $this->get_contains_submit_button_expectation(true),
-                $this->get_contains_correct_expectation(),
-                $this->get_does_not_contain_penalty_info_expectation(),
-                $this->get_does_not_contain_total_penalty_expectation(),
-                $this->get_does_not_contain_validation_error_expectation());
+            $this->get_contains_mark_summary(8.00),
+            $this->get_contains_submit_button_expectation(true),
+            $this->get_contains_correct_expectation(),
+            $this->get_does_not_contain_penalty_info_expectation(),
+            $this->get_does_not_contain_total_penalty_expectation(),
+            $this->get_does_not_contain_validation_error_expectation()
+        );
         $this->check_output_contains_selectoptions(
-                $this->get_contains_select_expectation('sub2_answer', $choices, '2', true));
+            $this->get_contains_select_expectation('sub2_answer', $choices, '2', true)
+        );
 
         // Finish the attempt.
         $this->quba->finish_all_questions();
@@ -871,9 +941,10 @@ final class walkthrough_test extends \qbehaviour_walkthrough_test_base {
         $this->check_output_contains_text_input('sub1_answer', 'Owl', false);
         $this->check_output_contains_text_input_with_class('sub1_answer', 'correct');
         $this->check_current_output(
-                $this->get_contains_mark_summary(8.00),
-                $this->get_does_not_contain_submit_button_expectation(),
-                $this->get_contains_correct_expectation(),
-                $this->get_does_not_contain_validation_error_expectation());
+            $this->get_contains_mark_summary(8.00),
+            $this->get_does_not_contain_submit_button_expectation(),
+            $this->get_contains_correct_expectation(),
+            $this->get_does_not_contain_validation_error_expectation()
+        );
     }
 }
